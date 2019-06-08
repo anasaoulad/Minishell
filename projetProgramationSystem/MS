@@ -1,0 +1,70 @@
+#!/bin/sh
+#..........................................................................
+# repertoire contennant les scripts
+DIR_SCRIPTS=/home/anas/Bureau/projetProgramationSystem
+trap "echo 'Control-C ne peut plus etre utilise tapé q pour quiter' ; sleep 1 ; clear ; continue " 1 2 3
+#..........................................................................
+# menu
+#.......................................................................    
+while true
+do
+clear
+tput cup 1 9	
+tput bold
+echo "\t
+
+ ███▄ ▄███▓ ██▓ ███▄    █  ██▓  ██████  ██░ ██ ▓█████  ██▓     ██▓    
+▓██▒▀█▀ ██▒▓██▒ ██ ▀█   █ ▓██▒▒██    ▒ ▓██░ ██▒▓█   ▀ ▓██▒    ▓██▒    
+▓██    ▓██░▒██▒▓██  ▀█ ██▒▒██▒░ ▓██▄   ▒██▀▀██░▒███   ▒██░    ▒██░    
+▒██    ▒██ ░██░▓██▒  ▐▌██▒░██░  ▒   ██▒░▓█ ░██ ▒▓█  ▄ ▒██░    ▒██░    
+▒██▒   ░██▒░██░▒██░   ▓██░░██░▒██████▒▒░▓█▒░██▓░▒████▒░██████▒░██████▒
+░ ▒░   ░  ░░▓  ░ ▒░   ▒ ▒ ░▓  ▒ ▒▓▒ ▒ ░ ▒ ░░▒░▒░░ ▒░ ░░ ▒░▓  ░░ ▒░▓  ░
+░  ░      ░ ▒ ░░ ░░   ░ ▒░ ▒ ░░ ░▒  ░ ░ ▒ ░▒░ ░ ░ ░  ░░ ░ ▒  ░░ ░ ▒  ░
+░      ░    ▒ ░   ░   ░ ░  ▒ ░░  ░  ░   ░  ░░ ░   ░     ░ ░     ░ ░   
+       ░    ░           ░  ░        ░   ░  ░  ░   ░  ░    ░  ░    ░  ░"
+tput sgr0
+tput cup 13 21
+tput setaf 3
+tput bold
+echo "Menu des choix"
+tput sgr0
+tput setaf 2
+tput cup 14 24
+echo "
+	 l  \t Lister les fichiers
+	 a  \t pour configurer une alarme
+	 h  \t heur actuelle
+	 i  \t afficher l'adresse ip
+	 s  \t etteindre l'ordinateur
+	 q  \t pour quitter
+      "
+ 
+tput cup 20 24 
+tput setaf 1
+echo "
+ 	Entrez une lettre (parmi les choix possibles)
+        	    puis tapez RETURN \c"
+tput sgr0
+  #..........................................................................
+  # saisie d une touche et gestion
+  #..........................................................................
+  read answer
+  clear
+
+  case "$answer" in
+	  
+l) $DIR_SCRIPTS/list;;
+i) $DIR_SCRIPTS/IP;;
+h) $DIR_SCRIPTS/heure;;
+a)$DIR_SCRIPTS/alarme1;;
+s)$DIR_SCRIPTS/shutdown;;
+
+    
+    [Qq]*)  echo "Merci" ; exit 0 ;;
+    *)      echo "Choisissez une option affichee dans le menu:" ;;
+  esac
+  echo ""
+  echo "tapez RETURN pour le menu"
+  read clavier
+
+done

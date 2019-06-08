@@ -1,0 +1,83 @@
+#!/bin/bash
+
+# while-menu-dialog: a menu driven system information program
+
+DIALOG_CANCEL=1
+DIALOG_ESC=255
+HEIGHT=0
+WIDTH=0
+OUTPUT="/home/anas/Bureau/projetProgramationSystem/input.txt"
+>$OUTPUT
+DIR="/home/anas/Bureau/projetProgramationSystem/"
+
+display_result() {
+  dialog --title "$1" \
+    --no-collapse \
+    --msgbox "$result" 0 0
+}
+display_input() {
+ dialog --title "$1" \
+	 --no-collapse \
+	 --inputbox "entrez nbr des secondes" 8 20 2>$OUTPUT
+ reponse=$?
+ sec=$(<$OUTPUT)
+ echo "$sec"
+}
+echo "etes vous sure d'utiliser le minishel graphic tapé ctrl+c si oui"
+./sigint
+while true; do
+  exec 3>&1
+  selection=$(dialog \
+    --backtitle "MINI SHELL" \
+    --title "Menu" \
+    --clear \
+    --cancel-label "Exit" \
+    --menu "que voulez vous ?" $HEIGHT $WIDTH 5 \
+    "1" "Lister les fichiers" \
+    "2" "Afficher l'heur" \
+    "3" "Afficher addrs IP" \
+    "4" "programer une alarme" \
+    "5" "Etteindre la machine" \
+    2>&1 1>&3)
+  exit_status=$?
+  exec 3>&-
+  case $exit_status in
+    $DIALOG_CANCEL)
+      clear
+      echo "fin de shell"
+      exit
+      ;;
+    $DIALOG_ESC)
+      clear
+      echo "shell abondonné" >&2
+      exit 1
+      ;;
+  esac
+  case $selection in
+    0 )
+      clear
+      echo "fin de shell"
+      ;;
+    1 )
+      result=$(echo "List";$DIR./list)
+      display_result "LIST"
+      ;;
+    2 )
+      result=$($DIR./heure)
+      display_result "heure"
+      ;;
+    3 )
+      result=$($DIR./IP)
+      display_result "Votre ADDR IP"
+      ;;
+    4 )
+      display_input "Alarme"
+      result=$($DIR./alarme $sec)    
+      ;;
+    5 )
+	    result=$(echo "Le system va s'arreté";$DIR./shutdown)
+	    ;;  
+  esac
+  rm $OUTPUT
+done
+
